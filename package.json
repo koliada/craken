@@ -1,0 +1,29 @@
+{
+  "name": "craken",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server/craken.js",
+  "scripts": {
+    "start": "export NODE_ENV=production && node server/craken.js",
+    "start:dev": "nodemon -w server --delay 500ms --inspect=0.0.0.0:5858 server/craken.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koliada/craken.git"
+  },
+  "author": "Craken Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/koliada/craken/issues"
+  },
+  "homepage": "https://github.com/koliada/craken#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

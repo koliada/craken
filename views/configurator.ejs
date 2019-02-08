@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>[<%= status %>] Craken</title>
+
+    <link rel="stylesheet" href="static/css/main.css?v=20190208">
+    <link rel="icon" type="image/png" href="static/images/favicons/favicon-196x196.png" sizes="196x196" />
+</head>
+
+<body>
+<section class="ConfigurationForm">
+    <form action="/start" method="post">
+        <label>
+            Status:
+            <span><%= status %></span>
+        </label>
+        <br>
+
+        <label>
+            Drop
+            <input type="number" name="nodes" value="<%= nodes %>" />
+            nodes
+        </label>
+
+        <label>
+            per
+            <input type="number" name="interval" value="<%= interval %>" />
+            seconds
+        </label>
+        <br>
+
+        <% if (status === 'stopped') { %>
+            <button type="submit" formaction="/start">Start</button>
+        <% } else { %>
+            <button type="submit" formaction="/stop">Stop</button>
+        <% } %>
+    </form>
+</section>
+</body>
+</html>
