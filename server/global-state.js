@@ -29,11 +29,20 @@ exports.startJob = async ({ nodes, interval, threshold }) => {
     return exports;
 };
 
-exports.stopJob = async () => {
+exports.stopJob = async (isInitialReset = false) => {
+    if (!isInitialReset) {
+        await nginx.restoreConfig();
+        await grafana.deleteAlert();
+        prometheus.setNginxUpstreamCount(nginx.getServersCount());
+
+        return exports;
+    }
+
     clearInterval(jobInterval);
 
     await nginx.restoreConfig();
     await grafana.deleteAlert();
+    await grafana.addStatusAnnotation(job.status);
     prometheus.setNginxUpstreamCount(nginx.getServersCount());
 
     job.status = 'stopped';
@@ -62,6 +71,7 @@ async function rebalance() {
         if (curCount >= minCount) {
             await nginx.writeConfig(curCount);
             prometheus.setNginxUpstreamCount(curCount);
+            await grafana.addRescaleAnnotation(curCount);
         } else {
             console.info(`Minimum server count reached: ${minCount}`);
         }

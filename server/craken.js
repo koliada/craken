@@ -1,4 +1,5 @@
 const server = require('./server');
+const globalState = require('./global-state');
 const gracefulShutdown = require('./graceful-shutdown');
 
 process.on('unhandledRejection', err => {
@@ -13,6 +14,7 @@ if (process.env.ENV_ID !== 'live') {
 
 (async () => {
     await server.init();
+    await globalState.stopJob(true);
     gracefulShutdown.init();
 
     console.info('Service is completely set up');

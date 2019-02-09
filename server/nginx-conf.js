@@ -7,11 +7,11 @@ exports.getServersCount = () => {
     return servers.length;
 };
 
-exports.writeConfig = async (serversNum) => {
+exports.writeConfig = async (serversCount) => {
     try {
         const { servers } = getNginx();
 
-        writeConfig(servers.slice(-serversNum));
+        writeConfig(servers.slice(-serversCount));
 
         return true;
     } catch (err) {

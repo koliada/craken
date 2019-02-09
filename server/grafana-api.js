@@ -2,12 +2,13 @@ const axios = require('axios');
 const { getGrafana } = require('./config');
 const alertPartial = require('./partials/alert.json');
 
-const DASHBOARD_ID = 'PGImyFuik';
+const DASHBOARD_UID = 'PGImyFuik';
+const DASHBOARD_ID = 8;
 const PANEL_ID = 4;
 
 exports.getAlertThreshold = async () => {
     try {
-        const dashboard = await getDashboard(DASHBOARD_ID);
+        const dashboard = await getDashboard(DASHBOARD_UID);
         const panel = dashboard.panels.find(({ id }) => id === PANEL_ID);
 
         return panel.alert ? (panel.alert.conditions[0].evaluator.params[0] * 1000) : 0;
@@ -20,7 +21,7 @@ exports.getAlertThreshold = async () => {
 
 exports.setAlert = async (ms) => {
     try {
-        const dashboard = await getDashboard(DASHBOARD_ID);
+        const dashboard = await getDashboard(DASHBOARD_UID);
         const panel = dashboard.panels.find(({ id }) => id === PANEL_ID);
 
         panel.alert = JSON.parse(JSON.stringify(alertPartial));
@@ -40,12 +41,40 @@ exports.setAlert = async (ms) => {
 
 exports.deleteAlert = async () => {
     try {
-        const dashboard = await getDashboard(DASHBOARD_ID);
+        const dashboard = await getDashboard(DASHBOARD_UID);
         const panel = dashboard.panels.find(({ id }) => id === PANEL_ID);
 
         delete panel.alert;
 
         await updateDashboard(dashboard);
+
+        return true;
+    } catch (err) {
+        console.error(err);
+
+        return false;
+    }
+};
+
+exports.addStatusAnnotation = async (status) => {
+    try {
+        const text = status === 'running' ? '[Craken] Test started' : '[Craken] Test finished';
+
+        await createAnnotation(DASHBOARD_ID, text);
+
+        return true;
+    } catch (err) {
+        console.error(err);
+
+        return false;
+    }
+};
+
+exports.addRescaleAnnotation = async (serversCount) => {
+    try {
+        const text = `[Craken] Downscaled to ${serversCount}`;
+
+        await createAnnotation(DASHBOARD_ID, text);
 
         return true;
     } catch (err) {
@@ -81,5 +110,25 @@ async function updateDashboard(dashboard) {
             password: password
         },
         data: { dashboard, overwrite: true }
+    });
+}
+
+async function createAnnotation(dashboardId, text) {
+    const { host, port, username, password } = getGrafana();
+
+    await axios({
+        method: 'post',
+        url: `http://${host}:${port}/api/annotations`,
+        auth: {
+            username: username,
+            password: password
+        },
+        data: {
+            dashboardId: dashboardId,
+            time: new Date().getTime(),
+            isRegion: true,
+            tags: ['craken'],
+            text: text
+        }
     });
 }
