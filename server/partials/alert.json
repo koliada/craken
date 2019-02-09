@@ -1,0 +1,39 @@
+{
+  "conditions": [
+    {
+      "evaluator": {
+        "params": [
+          10
+        ],
+        "type": "gt"
+      },
+      "operator": {
+        "type": "and"
+      },
+      "query": {
+        "params": [
+          "C",
+          "5m",
+          "now"
+        ]
+      },
+      "reducer": {
+        "params": [],
+        "type": "avg"
+      },
+      "type": "query"
+    }
+  ],
+  "executionErrorState": "alerting",
+  "for": "0",
+  "frequency": "30s",
+  "handler": 1,
+  "message": "test alert",
+  "name": "Response Time alert",
+  "noDataState": "no_data",
+  "notifications": [
+    {
+      "id": 1
+    }
+  ]
+}

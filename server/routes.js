@@ -7,8 +7,8 @@ exports.getPublicRouter = () => {
     const router = Router();
 
     router.get('/', testRunnerController.get);
-    router.post('/start', testRunnerController.start);
-    router.post('/stop', testRunnerController.stop);
+    router.post('/start', bodyParser.urlencoded(), testRunnerController.start);
+    router.post('/stop', bodyParser.urlencoded(), testRunnerController.stop);
     router.post('/webhook/grafana', bodyParser.json(), webhookController.grafanaPost);
 
     return router;

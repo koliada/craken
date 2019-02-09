@@ -28,6 +28,12 @@
             <input type="number" name="interval" value="<%= interval %>" />
             seconds
         </label>
+
+        <label>
+            and stop when response time is above
+            <input type="number" name="threshold" value="<%= threshold %>" />
+            ms
+        </label>
         <br>
 
         <% if (status === 'stopped') { %>
