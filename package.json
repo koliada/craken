@@ -22,7 +22,8 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "prom-client": "^11.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
