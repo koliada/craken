@@ -24,6 +24,7 @@ exports.startJob = async ({ nodes, interval, threshold }) => {
     job.threshold = parseInt(threshold, 10);
 
     await grafana.setAlert(job.threshold);
+    await grafana.addStatusAnnotation(job.status);
     rebalance();
 
     return exports;
@@ -71,7 +72,6 @@ async function rebalance() {
         if (curCount >= minCount) {
             await nginx.writeConfig(curCount);
             prometheus.setNginxUpstreamCount(curCount);
-            await grafana.addRescaleAnnotation(curCount);
         } else {
             console.info(`Minimum server count reached: ${minCount}`);
         }
