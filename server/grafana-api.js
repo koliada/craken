@@ -2,8 +2,8 @@ const axios = require('axios');
 const { getGrafana } = require('./config');
 const alertPartial = require('./partials/alert.json');
 
-const DASHBOARD_ID = 'uaPoSOXmk';
-const PANEL_ID = 3;
+const DASHBOARD_ID = 'PGImyFuik';
+const PANEL_ID = 4;
 
 exports.getAlertThreshold = async () => {
     try {

@@ -3,7 +3,7 @@ const isProduction = process.env.NODE_ENV;
 
 exports.getServer = () => {
     return {
-        port: 3000,
+        port: 8080,
         staticDir: path.resolve(__dirname, '../static'),
         viewsDir: path.resolve(__dirname, '../views'),
         privateRoute: '/api/v1',
@@ -14,7 +14,7 @@ exports.getServer = () => {
 exports.getGrafana = () => {
     return {
         host: '35.228.161.242',
-        port: '3000',
+        port: 3000,
         username: 'admin',
         password: 'admin'
     };
