@@ -1,4 +1,5 @@
-const grafana = require('../grafana');
+const grafana = require('../grafana-api');
+const globalState = require('../global-state');
 
 const SECRET = '8ebaa3c6eb80111d63cc14889d76f3083c29b83c';
 
@@ -13,6 +14,7 @@ exports.grafanaPost = async (req, res) => {
         const { state } = req.body;
 
         if (state === 'alerting') {
+            globalState.stopJob();
             await grafana.deleteAlert();
         }
 

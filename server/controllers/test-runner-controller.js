@@ -1,29 +1,22 @@
-const grafana = require('../grafana');
-
-const DEFAULT_THRESHOLD = 1000;
-
-const job = {
-    status: 'stopped',
-    nodes: 2,
-    interval: 30,
-    threshold: DEFAULT_THRESHOLD
-};
+const grafana = require('../grafana-api');
+const globalState = require('../global-state');
 
 exports.get = async (req, res) => {
     const threshold = await grafana.getAlertThreshold();
+    const job = globalState.getJob();
 
-    return res.render('configurator', Object.assign(job, {
-        threshold: threshold || DEFAULT_THRESHOLD
-    }));
+    if (threshold) {
+        Object.assign(job, {
+            threshold: threshold || globalState.DEFAULT_THRESHOLD
+        });
+    }
+
+    return res.render('configurator', job);
 };
 
 exports.start = async (req, res) => {
     const { nodes, interval, threshold } = req.body;
-
-    job.status = 'running';
-    job.nodes = parseInt(nodes, 10);
-    job.interval = parseInt(interval, 10);
-    job.threshold = parseInt(threshold, 10);
+    const job = globalState.startJob({ nodes, interval, threshold }).getJob();
 
     await grafana.setAlert(job.threshold);
 
@@ -31,8 +24,7 @@ exports.start = async (req, res) => {
 };
 
 exports.stop = async (req, res) => {
-    job.status = 'stopped';
-
+    globalState.stopJob();
     await grafana.deleteAlert();
 
     return res.redirect('/');

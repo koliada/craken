@@ -12,6 +12,8 @@ exports.getAlertThreshold = async () => {
 
         return panel.alert ? (panel.alert.conditions[0].evaluator.params[0] * 1000) : 0;
     } catch (err) {
+        console.error(err);
+
         return 0;
     }
 };
@@ -30,6 +32,8 @@ exports.setAlert = async (ms) => {
 
         return true;
     } catch (err) {
+        console.error(err);
+
         return false;
     }
 };
@@ -45,6 +49,8 @@ exports.deleteAlert = async () => {
 
         return true;
     } catch (err) {
+        console.error(err);
+
         return false;
     }
 };
