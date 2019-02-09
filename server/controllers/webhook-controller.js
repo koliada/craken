@@ -13,6 +13,7 @@ exports.grafanaPost = async (req, res) => {
         const { state } = req.body;
 
         if (state === 'alerting') {
+            console.info('Stopping from the webhook');
             await globalState.stopJob();
         }
 

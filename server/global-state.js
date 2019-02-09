@@ -34,6 +34,7 @@ exports.stopJob = async () => {
 
     await nginx.restoreConfig();
     await grafana.deleteAlert();
+    prometheus.setNginxUpstreamCount(nginx.getServersCount());
 
     job.status = 'stopped';
 
