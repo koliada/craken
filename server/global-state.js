@@ -39,14 +39,14 @@ exports.stopJob = async (isInitialReset = false) => {
         return exports;
     }
 
+    job.status = 'stopped';
+
     clearInterval(jobInterval);
 
     await nginx.restoreConfig();
     await grafana.deleteAlert();
     await grafana.addStatusAnnotation(job.status);
     prometheus.setNginxUpstreamCount(nginx.getServersCount());
-
-    job.status = 'stopped';
 
     return exports;
 };
