@@ -1,5 +1,6 @@
 const grafana = require('./grafana-api');
 const nginx = require('./nginx-conf');
+const prometheus = require('./prometheus');
 
 const DEFAULT_THRESHOLD = 1000;
 
@@ -59,6 +60,7 @@ async function rebalance() {
 
         if (curCount >= minCount) {
             await nginx.writeConfig(curCount);
+            prometheus.setNginxUpstreamCount(curCount);
         } else {
             console.info(`Minimum server count reached: ${minCount}`);
         }

@@ -1,5 +1,5 @@
-const prom = require('../prom');
+const prom = require('../prometheus');
 
 exports.get = (req, res) => {
-    res.end(prom.getMetrics());
-}
+    return res.end(prom.getMetrics());
+};

@@ -32,3 +32,12 @@ exports.getNginx = () => {
         ])
     };
 };
+
+exports.getPrometheus = () => {
+    return {
+        gauge: {
+            name: 'craken_nginx_upstream_count',
+            help: 'Number of upstream servers'
+        }
+    };
+};
