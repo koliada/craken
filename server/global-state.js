@@ -31,7 +31,7 @@ exports.startJob = async ({ nodes, interval, threshold }) => {
 };
 
 exports.stopJob = async (isInitialReset = false) => {
-    if (!isInitialReset) {
+    if (isInitialReset) {
         await nginx.restoreConfig();
         await grafana.deleteAlert();
         prometheus.setNginxUpstreamCount(nginx.getServersCount());
